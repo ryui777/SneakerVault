@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vault – SneakerVault</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  /* Professional Vault Styling */
+  .vault-hero {
+    padding: 6rem 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(214, 234, 255, 0.5), rgba(163, 201, 255, 0.3));
+    margin-bottom: 4rem;
+  }
+
+  .vault-hero h1 {
+    font-size: 3.5rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    letter-spacing: -1px;
+    font-weight: 700;
+  }
+
+  .vault-hero p {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  .vault-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    margin-bottom: 6rem;
+  }
+
+  .vault-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+    padding: 0;
+  }
+
+  .vault-card {
+    background: var(--card-bg);
+    border-radius: 1.2rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .vault-card:hover {
+    box-shadow: 0 12px 32px rgba(77, 166, 255, 0.15);
+    transform: translateY(-8px);
+  }
+
+  .vault-card-image {
+    width: 100%;
+    height: 320px;
+    background: linear-gradient(135deg, var(--pastel-light), var(--pastel-medium));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .vault-card-image img {
+    width: 85%;
+    height: 85%;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+  }
+
+  .vault-card:hover .vault-card-image img {
+    transform: scale(1.08);
+  }
+
+  .vault-card-content {
+    padding: 2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .vault-card-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .vault-card-meta {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 1.5rem;
+  }
+
+  .vault-card-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+  }
+
+  .vault-btn {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--secondary);
+    background: transparent;
+    color: var(--secondary);
+    border-radius: 0.6rem;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .vault-btn:hover {
+    background: var(--secondary);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .vault-btn.primary {
+    background: var(--secondary);
+    color: #fff;
+    border-color: var(--secondary);
+  }
+
+  .vault-btn.primary:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+
+  .vault-empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .vault-empty-state h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  .vault-empty-state p {
+    color: #888;
+    margin-bottom: 2rem;
+  }
+
+  .vault-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .vault-stat {
+    text-align: center;
+  }
+
+  .vault-stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--secondary);
+  }
+
+  .vault-stat-label {
+    font-size: 0.95rem;
+    color: #888;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .vault-hero {
+      padding: 4rem 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .vault-hero h1 {
+      font-size: 2rem;
+    }
+
+    .vault-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .vault-container {
+      margin-bottom: 4rem;
+    }
+
+    .vault-stats {
+      gap: 2rem;
+    }
+
+    .vault-stat-number {
+      font-size: 1.8rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-container">
+    <a href="index.html" class="logo"><img src="assets/img/logo.jpg" alt="SneakerVault" /></a>
+    <nav class="desktop-menu">
+      <a href="index.html">Home</a>
+      <a href="buy.html">Buy</a>
+      <a href="sell.html">Sell</a>
+      <a class="active" href="vault.html">Vault</a>
+      <a href="news.html">News</a>
+      <a href="user.html">Profile</a>
+    </nav>
+    <button class="mobile-menu-toggle">☰</button>
+  </div>
+</header>
+
+<!-- Premium Hero Section -->
+<section class="vault-hero">
+  <h1>Your Sneaker Vault</h1>
+  <p>Curate, showcase, and celebrate your personal sneaker collection with the community</p>
+</section>
+
+<!-- Stats Section -->
+<section class="vault-container">
+  <div class="vault-stats">
+    <div class="vault-stat">
+      <div class="vault-stat-number">0</div>
+      <div class="vault-stat-label">Sneakers</div>
+    </div>
+    <div class="vault-stat">
+      <div class="vault-stat-number" id="likesReceivedCount">0</div>
+      <div class="vault-stat-label">Likes Received</div>
+    </div>
+    <div class="vault-stat">
+      <div class="vault-stat-number">0</div>
+      <div class="vault-stat-label">Collection Value</div>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery Grid -->
+<section class="vault-container">
+  <div class="vault-grid">
+    <!-- Card 1 -->
+    <div class="vault-card">
+      <div class="vault-card-image">
+        <img src="assets/img/1.jpg" alt="Asics Gel-Kayano 14 x The Museum Visitor">
+      </div>
+      <div class="vault-card-content">
+        <h3 class="vault-card-title">Asics Gel-Kayano 14 x The Museum Visitor</h3>
+        <p class="vault-card-meta">Added 2 weeks ago</p>
+        <div class="vault-card-actions">
+          <button class="vault-btn vault-like-btn">❤️ Like</button>
+          <button class="vault-btn primary vault-view-btn">💬 View</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="vault-card">
+      <div class="vault-card-image">
+        <img src="assets/img/2.jpg" alt="Nike Vomero 5">
+      </div>
+      <div class="vault-card-content">
+        <h3 class="vault-card-title">Nike Vomero 5</h3>
+        <p class="vault-card-meta">Added 1 month ago</p>
+        <div class="vault-card-actions">
+          <button class="vault-btn vault-like-btn">❤️ Like</button>
+          <button class="vault-btn primary vault-view-btn">💬 View</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="vault-card">
+      <div class="vault-card-image">
+        <img src="assets/img/4.jpg" alt="Adidas Samba">
+      </div>
+      <div class="vault-card-content">
+        <h3 class="vault-card-title">Adidas Samba</h3>
+        <p class="vault-card-meta">Added 3 weeks ago</p>
+        <div class="vault-card-actions">
+          <button class="vault-btn vault-like-btn">❤️ Like</button>
+          <button class="vault-btn primary vault-view-btn">💬 View</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="vault-card">
+      <div class="vault-card-image">
+        <img src="assets/img/6.jpg" alt="New Balance 1906r">
+      </div>
+      <div class="vault-card-content">
+        <h3 class="vault-card-title">New Balance 1906r #4</h3>
+        <p class="vault-card-meta">Added 1 week ago</p>
+        <div class="vault-card-actions">
+          <button class="vault-btn vault-like-btn">❤️ Like</button>
+          <button class="vault-btn primary vault-view-btn">💬 View</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="vault-card">
+      <div class="vault-card-image">
+        <img src="assets/img/8.jpg" alt="Nike Alphafly Next">
+      </div>
+      <div class="vault-card-content">
+        <h3 class="vault-card-title">Nike Alphafly Next</h3>
+        <p class="vault-card-meta">Added 5 days ago</p>
+        <div class="vault-card-actions">
+          <button class="vault-btn vault-like-btn">❤️ Like</button>
+          <button class="vault-btn primary vault-view-btn">💬 View</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="vault-card">
+      <div class="vault-card-image">
+        <img src="assets/img/11.jpg" alt="Weejuns Logan">
+      </div>
+      <div class="vault-card-content">
+        <h3 class="vault-card-title">Weejuns Logan</h3>
+        <p class="vault-card-meta">Added yesterday</p>
+        <div class="vault-card-actions">
+          <button class="vault-btn vault-like-btn">❤️ Like</button>
+          <button class="vault-btn primary vault-view-btn">💬 View</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Spacer for white space -->
+<div style="height: 3rem;"></div>
+
+<footer class="footer">
+  © 2025 SneakerVault — All Rights Reserved
+</footer>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profile - SneakerVault</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    /* --------------------------
+       Profile Section & Forms
+    ---------------------------*/
+    .profile-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      width: 100vw;
+      background: var(--pastel-light);
+      padding: 2rem;
+      box-sizing: border-box;
+    }
+
+    .form-container {
+      background: var(--card-bg);
+      padding: 2rem 2.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 12px 30px var(--hover-shadow);
+      width: 100%;
+      max-width: 450px;
+      text-align: center;
+      transition: all 0.5s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .form-container.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .form-container h2 {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .form-container input {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border-radius: 0.4rem;
+      border: 1px solid #ccc;
+      transition: all 0.3s ease;
+    }
+
+    .form-container input:focus {
+      border-color: var(--secondary);
+      background: var(--pastel-medium);
+      outline: none;
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 0.8rem;
+      background: var(--secondary);
+      color: #fff;
+      border: none;
+      border-radius: 0.4rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .form-container button:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px var(--hover-shadow);
+    }
+
+    .toggle-link {
+      display: block;
+      margin-top: 1rem;
+      color: var(--primary);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .toggle-link:hover {
+      color: var(--secondary);
+    }
+
+    /* Placeholder text styling for inputs */
+    .form-container input::placeholder {
+      color: #666666;
+      font-family: Arial, sans-serif;
+      font-size: 1rem;
+      font-weight: normal;
+    }
+
+    .profile-greeting {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -48%) scale(0.96);
+      background: rgba(27, 58, 87, 0.95);
+      color: #fff;
+      padding: 0.75rem 1.8rem;
+      border-radius: 999px;
+      box-shadow: 0 14px 36px rgba(29, 85, 157, 0.25);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      font-size: 0.95rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.28s ease, transform 0.28s ease;
+      z-index: 10001;
+    }
+
+    .profile-greeting.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -55%) scale(1);
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="logo"><img src="assets/img/logo.jpg" alt="SneakerVault" /></a>
+      <nav class="desktop-menu">
+        <a href="index.html">Home</a>
+        <a href="buy.html">Buy </a>
+        <a href="sell.html">Sell </a>
+        <a href="vault.html">Vault</a>
+        <a href="news.html">News</a>
+        <a href="profile.html" class="active">Profile</a>
+      </nav>
+      <button class="mobile-menu-toggle">&#9776;</button>
+    </div>
+  </header>
+
+  <section class="profile-section" style="min-height:40vh;">
+    <div class="form-container show" style="max-width:700px; text-align:left;">
+      <h2 style="margin-bottom:0.5rem; text-align:center;">Profile Dashboard</h2>
+      <p style="margin-bottom:0.25rem; font-weight:600; text-align:center;" id="profileWelcomeText">Welcome to your SneakerVault activity.</p>
+      <p style="margin:0 0 1.25rem; font-size:0.9rem; color:#667085; text-align:center;">Overview of your likes, wishlist, offers, and listings for this browser.</p>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1rem; margin-bottom:1rem;">
+        <div style="background:var(--pastel-light); border-radius:0.75rem; padding:0.85rem 1rem;">
+          <p style="margin:0; font-size:0.8rem; color:#667085;">Liked sneakers</p>
+          <p style="margin:0.25rem 0 0; font-size:1.4rem; font-weight:700; color:var(--primary);" id="profileLikesStat">0</p>
+        </div>
+        <div style="background:var(--pastel-light); border-radius:0.75rem; padding:0.85rem 1rem;">
+          <p style="margin:0; font-size:0.8rem; color:#667085;">Wishlist adds</p>
+          <p style="margin:0.25rem 0 0; font-size:1.4rem; font-weight:700; color:var(--primary);" id="profileWishlistStat">0</p>
+        </div>
+        <div style="background:var(--pastel-light); border-radius:0.75rem; padding:0.85rem 1rem;">
+          <p style="margin:0; font-size:0.8rem; color:#667085;">Offers sent</p>
+          <p style="margin:0.25rem 0 0; font-size:1.4rem; font-weight:700; color:var(--primary);" id="profileOffersStat">0</p>
+        </div>
+        <div style="background:var(--pastel-light); border-radius:0.75rem; padding:0.85rem 1rem;">
+          <p style="margin:0; font-size:0.8rem; color:#667085;">Listings submitted</p>
+          <p style="margin:0.25rem 0 0; font-size:1.4rem; font-weight:700; color:var(--primary);" id="profileListingsStat">0</p>
+        </div>
+      </div>
+      <hr style="margin:1rem 0; border:none; border-top:1px solid #e0e6f0;" />
+      <p style="margin-bottom:0.5rem; font-weight:600;">Recent offer status (demo):</p>
+      <ul style="list-style:none; padding-left:0; text-align:left; font-size:0.9rem; margin:0;">
+        <li><strong>Air Max Sky Pastel</strong> – <span style="color:#22c55e;">Approved</span></li>
+        <li><strong>Jordan 1 Soft Bloom</strong> – <span style="color:#f97316;">Pending</span></li>
+        <li><strong>Dunk Low Cloud Shift</strong> – <span style="color:#ef4444;">Declined</span></li>
+      </ul>
+      <div style="display:flex; justify-content:flex-end; margin-top:1.25rem;">
+        <button onclick="logout()" style="background:#eef2ff; border:1px solid #d0d7e2; border-radius:999px; padding:0.35rem 1rem; font-size:0.8rem; cursor:pointer; color:#475569;">Log out</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="profileGreeting" class="profile-greeting"></div>
+
+  <script>
+    const profileGreetingEl = document.getElementById('profileGreeting');
+
+    function loadProfileStats() {
+      const likes = localStorage.getItem('svStatsVaultLikes') || '0';
+      const wishlist = localStorage.getItem('svStatsWishlistAdds') || '0';
+      const listings = localStorage.getItem('svStatsListingsSubmitted') || '0';
+      const offers = localStorage.getItem('svStatsOffersSent') || '0';
+
+      const likesEl = document.getElementById('profileLikesStat');
+      const wishlistEl = document.getElementById('profileWishlistStat');
+      const listingsEl = document.getElementById('profileListingsStat');
+      const offersEl = document.getElementById('profileOffersStat');
+
+      if (likesEl) likesEl.textContent = likes;
+      if (wishlistEl) wishlistEl.textContent = wishlist;
+      if (listingsEl) listingsEl.textContent = listings;
+      if (offersEl) offersEl.textContent = offers;
+
+      // activity section is always visible
+    }
+
+    function showProfileGreeting(message) {
+      if (!profileGreetingEl) return;
+      profileGreetingEl.textContent = message;
+      profileGreetingEl.classList.add('show');
+      setTimeout(() => {
+        profileGreetingEl.classList.remove('show');
+      }, 1600);
+    }
+
+    function initProfileDashboard() {
+      const storedFirstName = localStorage.getItem('svUserFirstName');
+      const welcomeEl = document.getElementById('profileWelcomeText');
+      if (storedFirstName && welcomeEl) {
+        welcomeEl.textContent = `Hi, ${storedFirstName}! Here is your SneakerVault activity.`;
+        showProfileGreeting(`Hi, ${storedFirstName}! Welcome!`);
+      }
+      loadProfileStats();
+    }
+
+    function logout() {
+      // Clear all demo data and restart to home page
+      localStorage.clear();
+      window.location.href = 'index.html';
+    }
+
+    initProfileDashboard();
+
+  </script>
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    flatpickr("#signupBirthday", {
+      dateFormat: "m/d/Y",
+      defaultDate: null,
+      allowInput: true,
+    });
+  </script>
+</body>
+</html>

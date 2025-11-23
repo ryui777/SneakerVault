@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User - SneakerVault</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="logo"><img src="assets/img/logo.jpg" alt="SneakerVault" /></a>
+      <nav class="desktop-menu">
+        <a href="index.html">Home</a>
+        <a href="buy.html">Buy</a>
+        <a href="sell.html">Sell</a>
+        <a href="vault.html">Vault</a>
+        <a href="news.html">News</a>
+        <a href="user.html" class="active">Profile</a>
+      </nav>
+      <button class="mobile-menu-toggle">&#9776;</button>
+    </div>
+  </header>
+
+  <section class="profile-section">
+    <!-- Login Form -->
+    <div class="form-container show" id="loginForm">
+      <h2>Login</h2>
+      <input type="text" id="loginEmail" placeholder="Email" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <button onclick="login()">Login</button>
+      <span class="toggle-link" onclick="toggleForms()">Don't have an account? Sign Up</span>
+    </div>
+
+    <!-- Sign-Up Form -->
+    <div class="form-container hidden" id="signupForm">
+      <h2>Create Account</h2>
+      <input type="text" id="signupFirstName" placeholder="First Name" required />
+      <input type="text" id="signupLastName" placeholder="Last Name" required />
+      <input type="text" id="signupBirthday" name="signupBirthday" placeholder="Birthdate" required style="padding: 0.8rem; margin-bottom: 1rem; border-radius: 0.4rem; border: 1px solid #ccc; box-sizing: border-box; width: 100%;" />
+      <input type="email" id="signupEmail" placeholder="Email" required />
+      <input type="password" id="signupPassword" placeholder="Password" required />
+      <button onclick="signup()">Sign Up</button>
+      <span class="toggle-link" onclick="toggleForms()">Already have an account? Login</span>
+    </div>
+  </section>
+
+  <div id="profileGreeting" class="profile-greeting"></div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const profileGreetingEl = document.getElementById('profileGreeting');
+
+    function toggleForms() {
+      loginForm.classList.toggle('hidden');
+      loginForm.classList.toggle('show');
+      signupForm.classList.toggle('hidden');
+      signupForm.classList.toggle('show');
+    }
+
+    // If already logged in, skip login screen and go straight to profile dashboard
+    const isLoggedIn = localStorage.getItem('svUserLoggedIn');
+    if (isLoggedIn === 'true') {
+      window.location.href = 'profile.html';
+    }
+
+    function showProfileGreeting(message, redirect) {
+      if (!profileGreetingEl) return;
+      profileGreetingEl.textContent = message;
+      profileGreetingEl.classList.add('show');
+      setTimeout(() => {
+        profileGreetingEl.classList.remove('show');
+        if (redirect) {
+          window.location.href = 'profile.html';
+        }
+      }, 1600);
+    }
+
+    function login() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+
+      if (email && password) {
+        const storedFirstName = localStorage.getItem('svUserFirstName');
+        const storedEmail = localStorage.getItem('svUserEmail');
+        const storedPassword = localStorage.getItem('svUserPassword');
+
+        if (storedEmail && storedPassword) {
+          if (email === storedEmail && password === storedPassword) {
+            const nameForGreeting = storedFirstName || 'there';
+            localStorage.setItem('svUserLoggedIn', 'true');
+            showProfileGreeting(`Hi, ${nameForGreeting}! Welcome!`, true);
+            loginForm.querySelectorAll('input').forEach(input => (input.value = ''));
+          } else {
+            alert('Email or password is incorrect, or this account has not been signed up on this browser.');
+          }
+        } else {
+          localStorage.setItem('svUserLoggedIn', 'true');
+          showProfileGreeting('Hi! Welcome! (demo login)', true);
+          loginForm.querySelectorAll('input').forEach(input => (input.value = ''));
+        }
+      } else {
+        alert('Please fill in all fields.');
+      }
+    }
+
+    function signup() {
+      const firstName = document.getElementById('signupFirstName').value.trim();
+      const lastName = document.getElementById('signupLastName').value.trim();
+      const birthday = document.getElementById('signupBirthday').value;
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value.trim();
+
+      if (firstName && lastName && birthday && email && password) {
+        localStorage.setItem('svUserFirstName', firstName);
+        localStorage.setItem('svUserEmail', email);
+        localStorage.setItem('svUserPassword', password);
+        showProfileGreeting(`Thank you for signing up, ${firstName}! Please log in to view your dashboard.`, false);
+        signupForm.querySelectorAll('input').forEach(input => (input.value = ''));
+        // Return user to login form after signup
+        toggleForms();
+      } else {
+        alert('Please fill in all required fields.');
+      }
+    }
+  </script>
+
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    flatpickr("#signupBirthday", {
+      dateFormat: "m/d/Y",
+      defaultDate: null,
+      allowInput: true,
+    });
+  </script>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

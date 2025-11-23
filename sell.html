@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sell Sneakers – SneakerVault</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-container">
+    <a href="index.html" class="logo"><img src="assets/img/logo.jpg" alt="SneakerVault" /></a>
+    <nav class="desktop-menu">
+      <a href="index.html">Home</a>
+      <a href="buy.html">Buy</a>
+      <a class="active" href="sell.html">Sell</a>
+      <a href="vault.html">Vault</a>
+      <a href="news.html">News</a>
+      <a href="user.html">Profile</a>
+    </nav>
+    <button class="mobile-menu-toggle">☰</button>
+  </div>
+</header>
+
+<section class="page-header">
+  <h1>Sell Your Sneakers</h1>
+  <p>List your sneakers and get a quick appraisal estimate.</p>
+</section>
+
+<section class="section">
+  <form id="sellForm" class="sell-form-container">
+    <div class="form-row">
+      <label for="brand">Brand / Model:</label>
+      <input type="text" id="brand" name="brand" placeholder="Nike Air Max" required>
+    </div>
+
+    <div class="form-row">
+      <label for="size">Size:</label>
+      <input type="number" id="size" name="size" placeholder="9" required>
+    </div>
+
+    <div class="form-row">
+      <label for="price">Price ($):</label>
+      <input type="number" id="price" name="price" placeholder="220" required>
+    </div>
+
+    <div class="form-row form-row-full">
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" placeholder="Add details about your sneaker..." required></textarea>
+    </div>
+
+    <div class="form-row form-row-full">
+      <label for="uploadImages">Upload Images (3–5):</label>
+      <input type="file" id="uploadImages" name="uploadImages" multiple accept="image/*" required>
+    </div>
+
+    <div class="form-buttons">
+      <button type="button" class="btn appraisal-btn" onclick="getAppraisal()">Get Appraisal</button>
+      <button type="submit" class="btn submit-btn">Submit Listing</button>
+    </div>
+
+    <p id="appraisalResult" class="appraisal-result"></p>
+  </form>
+</section>
+
+<footer class="footer">
+  © 2025 SneakerVault — All Rights Reserved
+</footer>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>
