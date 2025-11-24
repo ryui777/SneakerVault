@@ -338,10 +338,9 @@ h1, h2, h3, h4, h5 {
   padding: 0.8rem;
   display: flex;
   flex-direction: column;
-  height: 100%; /* Ensure card fills grid cell */
+  height: 320px; /* Ensure card fills grid cell */
+  width: 220px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  max-width: 220px;
-  min-height: 280px;
   margin: 0 auto;
 }
 .product-card:hover,
@@ -377,7 +376,7 @@ h1, h2, h3, h4, h5 {
   margin-top: auto; /* Pushes title to the bottom */
   font-size: 1rem;
   line-height: 1.2;
-  min-height: 2.4em; /* Reserve space for 2 lines */
+  height: 50px; /* Reserve space for 2 lines */
 }
 
 .product-card p,
@@ -493,7 +492,6 @@ h1, h2, h3, h4, h5 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
-  align-items: stretch; /* Make cards in a row equal height */
   justify-items: center;
   padding: 1rem 0;
 }
@@ -675,9 +673,8 @@ h1, h2, h3, h4, h5 {
 /* Featured sneakers grid layout */
 .featured-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
-  align-items: stretch; /* Make cards in a row equal height */
   justify-items: center;
   padding: 2rem 0;
 }
@@ -766,7 +763,7 @@ h1, h2, h3, h4, h5 {
   .featured-grid,
   .blog-grid,
   .gallery-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Allow for 2 columns on larger phones */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Allow for 2 columns on larger phones */
     gap: 2rem; /* Increased gap for better separation */
   }
 
