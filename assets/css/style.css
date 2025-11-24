@@ -737,13 +737,13 @@ h1, h2, h3, h4, h5 {
 
   .nav {
     height: auto; /* Let padding control the height */
-    padding: 0.5rem 1.25rem;
+    padding: 0.75rem 1.5rem; /* Increased padding for a better look */
     background-color: #fff;
-    box-shadow: 0 4px 12px rgba(29, 85, 157, 0.25);
+    box-shadow: 0 4px 12px rgba(29, 85, 157, 0.1); /* Softer shadow for a cleaner look */
   }
 
   .hero {
-    padding: 3.5rem 0;
+    padding: 4rem 1.5rem; /* Adjusted padding for better spacing */
   }
 
   .hero-content h1 {
@@ -759,15 +759,16 @@ h1, h2, h3, h4, h5 {
   .products,
   .page-header,
   .quick-search {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 
   .product-grid,
   .featured-grid,
   .blog-grid,
   .gallery-grid {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Allow for 2 columns on larger phones */
+    gap: 2rem; /* Increased gap for better separation */
   }
 
   .product-card,
@@ -776,7 +777,7 @@ h1, h2, h3, h4, h5 {
     max-width: 100%;
     min-height: auto;
   }
-  
+
   .sell-form-container {
     gap: 1.5rem 2rem; /* Increase vertical gap */
   }
