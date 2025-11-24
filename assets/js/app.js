@@ -57,6 +57,12 @@ function getAppraisal() {
     index++;
     if (index === text.length) clearInterval(typeInterval);
   }, 40);
+
+  // Populate the price field with the estimated appraisal value
+  const priceInput = document.getElementById('price');
+  if (priceInput) {
+    priceInput.value = estimate;
+  }
 }
 
 /* -------------------------------------
@@ -80,9 +86,7 @@ const likesReceivedEl = document.getElementById('likesReceivedCount');
 
 document.querySelectorAll('.vault-like-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    const isLoggedIn = localStorage.getItem('svUserLoggedIn') === 'true';
-    if (!isLoggedIn) {
-      window.location.href = 'user.html';
+    if (requireLogin()) {
       return;
     }
     btn.classList.add('btn-clicked');
@@ -138,9 +142,7 @@ document.addEventListener('keydown', (e) => {
 
 document.querySelectorAll('.vault-view-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    const isLoggedIn = localStorage.getItem('svUserLoggedIn') === 'true';
-    if (!isLoggedIn) {
-      window.location.href = 'user.html';
+    if (requireLogin()) {
       return;
     }
     btn.classList.add('btn-clicked');
@@ -152,22 +154,17 @@ document.querySelectorAll('.vault-view-btn').forEach(btn => {
   });
 });
 
-// Offer buttons (Buy page)
-document.querySelectorAll('.offer-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const isLoggedIn = localStorage.getItem('svUserLoggedIn') === 'true';
-    if (!isLoggedIn) {
-      window.location.href = 'user.html';
-      return;
-    }
-    btn.classList.add('btn-clicked');
-    setTimeout(() => btn.classList.remove('btn-clicked'), 300);
-    const currentOffers = parseInt(localStorage.getItem('svStatsOffersSent') || '0', 10);
-    localStorage.setItem('svStatsOffersSent', String(currentOffers + 1));
-    wishlistToast.textContent = 'Offer sent';
+
+
+function requireLogin() {
+  const isLoggedIn = localStorage.getItem('svUserLoggedIn') === 'true';
+  if (!isLoggedIn) {
+    wishlistToast.textContent = 'Please log in to continue.';
     showWishlistToast();
-  });
-});
+    return true; // Login required
+  }
+  return false; // User is logged in
+}
 
 // Wishlist toast setup
 const wishlistToast = document.createElement('div');
@@ -185,9 +182,7 @@ function showWishlistToast() {
 
 document.querySelectorAll('.wishlist-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    const isLoggedIn = localStorage.getItem('svUserLoggedIn') === 'true';
-    if (!isLoggedIn) {
-      window.location.href = 'user.html';
+    if (requireLogin()) {
       return;
     }
     btn.classList.add('btn-clicked');
@@ -204,11 +199,30 @@ const sellForm = document.getElementById('sellForm');
 if (sellForm) {
   sellForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const isLoggedIn = localStorage.getItem('svUserLoggedIn') === 'true';
-    if (!isLoggedIn) {
-      window.location.href = 'user.html';
+    if (requireLogin()) {
       return;
     }
+
+    // Get form data
+    const brand = document.getElementById('brand').value;
+    const size = document.getElementById('size').value;
+    const price = document.getElementById('price').value;
+    const description = document.getElementById('description').value;
+
+    const newListing = {
+      id: Date.now(), // Unique ID for the listing
+      brand,
+      size,
+      price,
+      description,
+      imgSrc: 'assets/img/1.jpg' // Placeholder image
+    };
+
+    // Store listing in localStorage
+    let listedItems = JSON.parse(localStorage.getItem('svListedItems')) || [];
+    listedItems.push(newListing);
+    localStorage.setItem('svListedItems', JSON.stringify(listedItems));
+
     const submitBtn = sellForm.querySelector('.submit-btn');
     if (submitBtn) {
       submitBtn.classList.add('btn-clicked');
@@ -389,3 +403,99 @@ document.querySelectorAll('.comment-btn').forEach(btn => {
     }
   });
 });
+
+// Payment and Thank You Overlays
+const paymentOverlay = document.getElementById('payment-overlay');
+const thankYouOverlay = document.getElementById('thank-you-overlay');
+const paymentForm = document.getElementById('payment-form');
+const closeOverlayButtons = document.querySelectorAll('.close-overlay');
+const offerButtons = document.querySelectorAll('.offer-btn');
+
+let currentPurchasedProduct = null; // Global variable to store the product being purchased
+
+function showOverlay(overlay) {
+  overlay.classList.add('active');
+}
+
+function hideOverlay(overlay) {
+  overlay.classList.remove('active');
+}
+
+// Event listener for "Buy" buttons
+offerButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    if (requireLogin()) {
+      return;
+    }
+
+    // Capture product details
+    const productCard = button.closest('.product-card');
+    if (productCard) {
+      const imgSrc = productCard.querySelector('img')?.src;
+      const name = productCard.querySelector('h3')?.textContent.trim();
+      const priceText = productCard.querySelector('p')?.textContent.trim();
+
+      currentPurchasedProduct = { imgSrc, name, priceText };
+    }
+    
+    showOverlay(paymentOverlay);
+    // Add btn-clicked class for animation
+    button.classList.add('btn-clicked');
+    setTimeout(() => button.classList.remove('btn-clicked'), 300);
+  });
+});
+
+// Event listener for payment form submission
+
+if (paymentForm) {
+
+  paymentForm.addEventListener('submit', (e) => {
+
+    e.preventDefault();
+
+    hideOverlay(paymentOverlay);
+
+    showOverlay(thankYouOverlay);
+
+
+
+    // Save purchased product to localStorage
+
+    if (currentPurchasedProduct) {
+
+      let purchasedItems = JSON.parse(localStorage.getItem('svPurchasedItems')) || [];
+
+      purchasedItems.push(currentPurchasedProduct);
+
+      localStorage.setItem('svPurchasedItems', JSON.stringify(purchasedItems));
+
+      currentPurchasedProduct = null; // Clear the temporary product
+
+    }
+
+
+
+    // Clear form fields
+
+    paymentForm.reset();
+
+  });
+
+}
+
+// Event listeners for close buttons on both overlays
+closeOverlayButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    hideOverlay(paymentOverlay);
+    hideOverlay(thankYouOverlay);
+  });
+});
+
+// Close overlays with Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    hideOverlay(paymentOverlay);
+    hideOverlay(thankYouOverlay);
+  }
+});
+
