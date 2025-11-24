@@ -258,26 +258,38 @@ modal.addEventListener('click', () => {
 });
 
 /* -------------------------------------
-   Home Quick Filters (search with live filtering)
+   Header Search
 -------------------------------------- */
-const quickSearchSection = document.querySelector('.quick-search');
-if (quickSearchSection) {
-  const quickInput = quickSearchSection.querySelector('input[type="text"]');
-  const quickButton = quickSearchSection.querySelector('button');
+const searchIcon = document.querySelector('.search-icon');
+const searchInput = document.querySelector('.search-input');
 
+if (searchIcon && searchInput) {
+  searchIcon.addEventListener('click', () => {
+    searchInput.classList.toggle('active');
+    if (searchInput.classList.contains('active')) {
+      searchInput.focus();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-container') && searchInput.classList.contains('active')) {
+      searchInput.classList.remove('active');
+    }
+  });
+
+  const productSection = document.querySelector('.featured') || document.querySelector('.products');
+  const productCards = productSection ? productSection.querySelectorAll('.product-card') : [];
   const messageEl = document.createElement('p');
   messageEl.className = 'quick-search-message';
-  quickSearchSection.appendChild(messageEl);
 
-  // Get all product cards from the featured section
-  const featuredSection = document.querySelector('.featured');
-  const productCards = featuredSection ? featuredSection.querySelectorAll('.product-card') : [];
+  if(productSection) {
+    productSection.insertBefore(messageEl, productSection.firstChild);
+  }
 
-  function filterProducts() {
-    const term = quickInput.value.trim();
-    
+  searchInput.addEventListener('input', () => {
+    const term = searchInput.value.trim().toLowerCase();
+
     if (!term) {
-      // Show all products if search is empty
       productCards.forEach(card => {
         card.style.display = '';
       });
@@ -285,15 +297,10 @@ if (quickSearchSection) {
       return;
     }
 
-    const lowerTerm = term.toLowerCase();
     let matchCount = 0;
-
     productCards.forEach(card => {
-      const productName = card.querySelector('h3')?.textContent || '';
-      const productNameLower = productName.toLowerCase();
-      
-      // Check if product name starts with the search term
-      if (productNameLower.startsWith(lowerTerm)) {
+      const productName = card.querySelector('h3')?.textContent.toLowerCase() || '';
+      if (productName.includes(term)) {
         card.style.display = '';
         matchCount++;
       } else {
@@ -302,41 +309,16 @@ if (quickSearchSection) {
     });
 
     if (matchCount === 0) {
-      messageEl.textContent = `No results found for "${term}". Try searching for Nike, Adidas, or Asics.`;
+      messageEl.textContent = `No results found for "${searchInput.value}".`;
     } else {
-      messageEl.textContent = `Showing ${matchCount} result(s) for "${term}".`;
+      messageEl.textContent = `Showing ${matchCount} result(s) for "${searchInput.value}".`;
     }
-  }
-
-  if (quickButton && quickInput) {
-    // Filter on button click
-    quickButton.addEventListener('click', filterProducts);
-    
-    // Filter as user types (live search)
-    quickInput.addEventListener('input', filterProducts);
-    
-    // Filter on Enter key
-    quickInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        filterProducts();
-      }
-    });
-  }
+  });
 }
 
-/* -------------------------------------
-   Product Filters Demo (Buy Page)
--------------------------------------- */
-const buyFiltersSection = document.querySelector('.filters-section');
-if (buyFiltersSection) {
-  const buyFilterBtn = buyFiltersSection.querySelector('button');
-  if (buyFilterBtn) {
-    buyFilterBtn.addEventListener('click', () => {
-      alert('Filters applied! (demo placeholder)');
-    });
-  }
-}
+
+
+
 
 /* -------------------------------------
    Button Hover Animation

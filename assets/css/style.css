@@ -54,7 +54,7 @@ h1, h2, h3, h4, h5 {
 .nav .nav-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -67,10 +67,11 @@ h1, h2, h3, h4, h5 {
 }
 
 .nav .logo img {
-  height: 44px;
+  height: 60px;
   width: auto;
   display: block;
-  margin-right: 0.75rem;
+  margin: 0;
+  transition: transform 0.3s ease;
 }
 
 .hero .hero-content {
@@ -84,6 +85,7 @@ h1, h2, h3, h4, h5 {
   align-items: center;
   list-style: none;
   gap: 2rem; /* use gap for spacing instead of margin */
+  padding-right: 2rem;
 }
 
 .desktop-menu a {
@@ -111,6 +113,7 @@ h1, h2, h3, h4, h5 {
   cursor: pointer;
   color: var(--primary);
   transition: transform 0.3s ease;
+  padding-right: 1.5rem;
 }
 
 /* Mobile menu toggle open state */
@@ -619,19 +622,57 @@ h1, h2, h3, h4, h5 {
     padding: 0.85rem;
   }
 }
-/* Quick Filters Styling */
-.quick-search {
-  padding: 1rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+/* --------------------------
+   Search Input
+---------------------------*/
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.quick-search h2 {
-  margin-bottom: 1rem;
-  color: var(--primary);
-  font-weight: 700;
-  font-family: 'Montserrat', sans-serif;
+.search-input {
+  width: 0;
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background-color: #eef4f8;
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  transition: all 0.4s ease;
+  opacity: 0;
+  visibility: hidden;
 }
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background-color: #fff;
+}
+
+.search-input.active {
+  width: 250px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.search-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  stroke: var(--primary);
+  cursor: pointer;
+  transition: stroke 0.3s ease;
+}
+
+.search-icon:hover {
+  stroke: var(--secondary);
+}
+
 
 .filters {
   display: flex;
@@ -732,7 +773,7 @@ h1, h2, h3, h4, h5 {
 
   .nav {
     height: auto; /* Let padding control the height */
-    padding: 0.75rem 1.5rem; /* Increased padding for a better look */
+    padding: 0; /* Increased padding for a better look */
     background-color: #fff;
     box-shadow: 0 4px 12px rgba(29, 85, 157, 0.1); /* Softer shadow for a cleaner look */
   }
