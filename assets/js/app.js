@@ -258,7 +258,7 @@ modal.addEventListener('click', () => {
 });
 
 /* -------------------------------------
-   Home Quick Filters (search demo)
+   Home Quick Filters (search with live filtering)
 -------------------------------------- */
 const quickSearchSection = document.querySelector('.quick-search');
 if (quickSearchSection) {
@@ -269,30 +269,57 @@ if (quickSearchSection) {
   messageEl.className = 'quick-search-message';
   quickSearchSection.appendChild(messageEl);
 
-  const featuredNames = [
-    'Air Max Sky Pastel',
-    'Jordan 1 Soft Bloom',
-    'Dunk Low Cloud Shift',
-    'Air Force 1 Neon'
-  ];
+  // Get all product cards from the featured section
+  const featuredSection = document.querySelector('.featured');
+  const productCards = featuredSection ? featuredSection.querySelectorAll('.product-card') : [];
+
+  function filterProducts() {
+    const term = quickInput.value.trim();
+    
+    if (!term) {
+      // Show all products if search is empty
+      productCards.forEach(card => {
+        card.style.display = '';
+      });
+      messageEl.textContent = '';
+      return;
+    }
+
+    const lowerTerm = term.toLowerCase();
+    let matchCount = 0;
+
+    productCards.forEach(card => {
+      const productName = card.querySelector('h3')?.textContent || '';
+      const productNameLower = productName.toLowerCase();
+      
+      // Check if product name starts with the search term
+      if (productNameLower.startsWith(lowerTerm)) {
+        card.style.display = '';
+        matchCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    if (matchCount === 0) {
+      messageEl.textContent = `No results found for "${term}". Try searching for Nike, Adidas, or Asics.`;
+    } else {
+      messageEl.textContent = `Showing ${matchCount} result(s) for "${term}".`;
+    }
+  }
 
   if (quickButton && quickInput) {
-    quickButton.addEventListener('click', () => {
-      const term = quickInput.value.trim();
-      if (!term) {
-        messageEl.textContent = 'Please type a word to search.';
-        return;
-      }
-
-      const lowerTerm = term.toLowerCase();
-      const hasMatch = featuredNames.some(name =>
-        name.toLowerCase().includes(lowerTerm)
-      );
-
-      if (!hasMatch) {
-        messageEl.textContent = `No results for "${term}". Try searching another sneaker name.`;
-      } else {
-        messageEl.textContent = `Showing matches for "${term}" (demo only).`;
+    // Filter on button click
+    quickButton.addEventListener('click', filterProducts);
+    
+    // Filter as user types (live search)
+    quickInput.addEventListener('input', filterProducts);
+    
+    // Filter on Enter key
+    quickInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        filterProducts();
       }
     });
   }
