@@ -338,10 +338,9 @@ h1, h2, h3, h4, h5 {
   padding: 0.8rem;
   display: flex;
   flex-direction: column;
-  height: 320px; /* Ensure card fills grid cell */
-  width: 220px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin: 0 auto;
+  min-height: 320px;
+    width: 220px;
 }
 .product-card:hover,
 .gallery-card:hover,
@@ -373,10 +372,8 @@ h1, h2, h3, h4, h5 {
   color: var(--primary);
   font-weight: 700;
   margin-bottom: 0.65rem;
-  margin-top: auto; /* Pushes title to the bottom */
   font-size: 1rem;
   line-height: 1.2;
-  height: 50px; /* Reserve space for 2 lines */
 }
 
 .product-card p,
@@ -493,6 +490,7 @@ h1, h2, h3, h4, h5 {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
   justify-items: center;
+  align-items: stretch;
   padding: 1rem 0;
 }
 
@@ -676,6 +674,7 @@ h1, h2, h3, h4, h5 {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
   justify-items: center;
+  align-items: stretch;
   padding: 2rem 0;
 }
 
